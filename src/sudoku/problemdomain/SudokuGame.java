@@ -1,5 +1,7 @@
 package sudoku.problemdomain;
 
+import sudoku.constants.GameState;
+
 import java.io.Serializable;
 
 // implements Serializable just so that the game data file can
