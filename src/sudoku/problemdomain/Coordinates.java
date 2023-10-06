@@ -22,7 +22,7 @@ public class Coordinates {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (o == null || getClass() != obj.getClass()) return false;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Coordinates that = (Coordinates) obj;
         return x == that.x && y == that.y;
     }

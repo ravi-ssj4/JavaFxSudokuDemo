@@ -2,7 +2,10 @@ package sudoku.userinterface;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
@@ -190,7 +193,27 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
 
     @Override
     public void handle(KeyEvent keyEvent) {
+        // comes from the javafx's EventHandler class
+        if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED){
+            if (keyEvent.getText().matches("[0-9]")){
+                int value = Integer.parseInt(keyEvent.getText());
+                handleInput(value, keyEvent.getSource());
+            } else if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
+                handleInput(0, keyEvent.getSource());
+            } else {
+                ((TextField) keyEvent.getSource()).setText("");
+            }
+        }
+        // to make sure that this event is not propagated through the rest of the application
+        keyEvent.consume();
+    }
 
+    private void handleInput(int value, Object source) {
+        listener.onSudokuInput(
+                                ((SudokuTextField) source).getX(),
+                                ((SudokuTextField) source).getY(),
+                                value
+        );
     }
 
     @Override
@@ -216,13 +239,13 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
     public void updateBoard(SudokuGame game) {
         // update the entire board
         // called when the user restarts, etc the entire game
-        for (int xIndex = 0; xIndex < 9; xIndex++){
-            for (int yIndex = 0; yIndex < 9; yIndex++){
+        for (int xIndex = 0; xIndex < 9; xIndex++) {
+            for (int yIndex = 0; yIndex < 9; yIndex++) {
                 // as long as x, y values are correct, dosen't matter if we create a new Coordinates object
                 // to act as the key of the hashMap because it creates the same hash value for that particular (x, y)
                 TextField tile = textFieldCoordinates.get(new Coordinates(xIndex, yIndex));
 
-                // get immutable copy?
+                // get immutable copy -> to protect the SudokuGame object "game"
                 String value = Integer.toString(
                         game.getCopyOfGridState()[xIndex][yIndex]
                 );
@@ -231,9 +254,9 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
 
                 tile.setText(value);
 
-                //If a given tile has a non-zero value and the state of the game is GameState.NEW, then mark
-                //the tile as read only. Otherwise, ensure that it is NOT read only. - "doubt"
-                if (game.getGameState() == GameState.NEW){
+                //If a given tile has a non-zero value (else) and the state of the game is GameState.NEW, then mark
+                //the tile as read only (disable it). Otherwise (if case), ensure that it is NOT read only (enable it)
+                if (game.getGameState() == GameState.NEW) {
                     if (value.equals("")) {
                         tile.setStyle("-fx-opacity: 1;");
                         tile.setDisable(false);
@@ -243,15 +266,21 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
                     }
                 }
             }
+        }
     }
 
     @Override
     public void showDialog(String message) {
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.OK);
+        dialog.showAndWait();
 
+        if (dialog.getResult() == ButtonType.OK)
+            listener.onDialogClick();
     }
 
     @Override
     public void showError(String message) {
-
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.OK);
+        dialog.showAndWait();
     }
 }
