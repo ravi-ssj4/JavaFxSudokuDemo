@@ -10,18 +10,15 @@ import java.io.Serializable;
 public class SudokuGame implements Serializable {
     private final GameState gameState;
     private final int[][] gridState;
-
     public static final int GRID_BOUNDARY = 9;
 
     public SudokuGame(GameState gameState, int[][] gridState) {
         this.gameState = gameState;
         this.gridState = gridState;
     }
-
     public GameState getGameState() {
         return gameState;
     }
-
     /* we actually want to make the grid state immutable
      * ie. we are not going to give back gridState directly
      * we are going to give back a copy of grid state so that
