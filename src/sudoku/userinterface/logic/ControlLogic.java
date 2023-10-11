@@ -1,5 +1,6 @@
 package sudoku.userinterface.logic;
 
+import sudoku.computationLogic.GameLogic;
 import sudoku.constants.GameState;
 import sudoku.constants.Messages;
 import sudoku.problemdomain.IStorage;
@@ -38,7 +39,7 @@ public class ControlLogic implements IUserInterfaceContract.EventListener {
             // if the input is successfully written to the newGridState matrix,
             // create a new SudokuGame object. why? its a good practice! how?
             // doubt! -> immutable object? create a new data model from an old one every single time
-            gameData = new SudokuGame(GameLogic.checkForCompletion(newGridState));
+            gameData = new SudokuGame(GameLogic.checkForCompletion(newGridState), newGridState);
 
             storage.updateGameData(gameData);
             view.updateSquare(x, y, input);

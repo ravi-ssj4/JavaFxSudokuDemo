@@ -24,7 +24,7 @@ public class GameLogic {
         return GameState.COMPLETE;
     }
 
-    private static boolean sudokuIsInvalid(int[][] grid) {
+    public static boolean sudokuIsInvalid(int[][] grid) {
         HashSet<Integer>[] rows = new HashSet[GRID_BOUNDARY];
         HashSet<Integer>[] cols = new HashSet[GRID_BOUNDARY];
         HashSet<Integer>[] boxes = new HashSet[GRID_BOUNDARY];
@@ -51,7 +51,7 @@ public class GameLogic {
         return true;
     }
 
-    private static boolean tilesAreNotFilled(int[][] grid) {
+    public static boolean tilesAreNotFilled(int[][] grid) {
         for(int xIndex = 0; xIndex < GRID_BOUNDARY; xIndex++){
             for(int yIndex = 0; yIndex < GRID_BOUNDARY; yIndex++){
                 if (grid[xIndex][yIndex] == 0)
