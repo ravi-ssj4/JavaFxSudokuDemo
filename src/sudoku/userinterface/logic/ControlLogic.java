@@ -1,3 +1,18 @@
+/**
+ * Program Name: ControlLogic.java
+ *
+ * Description:
+ * ControlLogic serves as a mediator between the game's backend logic and the frontend UI.
+ * It responds to UI events, processes the game logic, and updates both the storage and the UI accordingly.
+ * The use of interfaces for both storage and UI interactions ensures modularity and flexibility in the design
+ *
+ * @author Ravi Ranjan
+ * @version 1.0.0
+ *
+ * Dependencies:
+ * Java FX
+ */
+
 package sudoku.userinterface.logic;
 
 import sudoku.computationLogic.GameLogic;
@@ -24,6 +39,11 @@ public class ControlLogic implements IUserInterfaceContract.EventListener {
     // connecting with frontend via Interface
     private IUserInterfaceContract.View view;
 
+    /* The constructor initializes the ControlLogic object with implementations of IStorage and
+    IUserInterfaceContract.View. This is an example of Dependency Injection, where the dependencies
+    are provided (or injected) into the class, rather than the class creating its own dependencies */
+    // the object of this class is created in SudokuBuildLogic and it already has
+    // locaded storage and view objects passed here, ready to use
     public ControlLogic(IStorage storage, IUserInterfaceContract.View view) {
         this.storage = storage;
         this.view = view;

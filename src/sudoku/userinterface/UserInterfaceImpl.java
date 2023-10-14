@@ -1,3 +1,19 @@
+/**
+ * Program Name: UserInterfaceImpl.java
+ *
+ * Description:
+ * UserInterfaceImpl class is responsible for rendering the Sudoku game's UI using JavaFX,
+ * handling user input, and communicating with other parts of the application (like the game logic).
+ * It uses various helper methods to create a structured and maintainable codebase for
+ * managing the Sudoku board's visualization and interactions
+ *
+ * @author Ravi Ranjan
+ * @version 1.0.0
+ *
+ * Dependencies:
+ * Java FX
+ */
+
 package sudoku.userinterface;
 
 import javafx.geometry.Pos;
@@ -21,6 +37,9 @@ import sudoku.problemdomain.SudokuGame;
 
 import java.util.HashMap;
 
+/* implements two interfaces:
+    IUserInterfaceContract.View (defining the expected UI behavior)
+    EventHandler<KeyEvent> (for handling keyboard events) */
 public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHandler<KeyEvent> {
 
     // like a window
@@ -148,6 +167,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
                 // this class UserInterfaceImpl implements EventHandler<KeyEvent>
                 // which is an inbuilt javafx EventHandler class,
                 // hence we can pass this(as it implements EventHandler)
+                // attaching setOnKeyPressed event with the tile object basically
                 tile.setOnKeyPressed(this);
 
                 // add this tile to the hashMap previously created
@@ -191,6 +211,10 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
         this.stage.setScene(scene);
     }
 
+    // The handle method is from the EventHandler<KeyEvent> interface
+    // and processes keyboard events for the Sudoku text fields.
+    // When a number key is pressed, it updates the corresponding field.
+    // When backspace is pressed, it clears the field.
     @Override
     public void handle(KeyEvent keyEvent) {
         // comes from the javafx's EventHandler class
@@ -241,7 +265,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
         // called when the user restarts, etc the entire game
         for (int xIndex = 0; xIndex < 9; xIndex++) {
             for (int yIndex = 0; yIndex < 9; yIndex++) {
-                // as long as x, y values are correct, dosen't matter if we create a new Coordinates object
+                // as long as x, y values are correct, doesn't matter if we create a new Coordinates object
                 // to act as the key of the hashMap because it creates the same hash value for that particular (x, y)
                 TextField tile = textFieldCoordinates.get(new Coordinates(xIndex, yIndex));
 
@@ -254,7 +278,7 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View, EventHand
 
                 tile.setText(value);
 
-                //If a given tile has a non-zero value (else) and the state of the game is GameState.NEW, then mark
+                //If a given tile has a non-zero value (else case) and the state of the game is GameState.NEW, then mark
                 //the tile as read only (disable it). Otherwise (if case), ensure that it is NOT read only (enable it)
                 if (game.getGameState() == GameState.NEW) {
                     if (value.equals("")) {

@@ -27,6 +27,9 @@ public class SudokuBuildLogic {
 
         IUserInterfaceContract.EventListener uiLogic = new ControlLogic(storage, userInterface);
 
+        // our task is to set the listener for action items(tiles in our case)
+        // and update the new board with the GameState retrieved from the persisted game
+        // probably played and saved previously or if not, then update the board with a new game
         userInterface.setListener(uiLogic);
         userInterface.updateBoard(initialState);
     }

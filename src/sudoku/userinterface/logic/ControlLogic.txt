@@ -1,0 +1,47 @@
+Dependency Injection (DI) is a design pattern in object-oriented programming that deals with how components acquire their dependencies. Let's break it down:
+
+What is a Dependency?
+A dependency is any object that another object requires to function correctly. In our ControlLogic class example, both IStorage and IUserInterfaceContract.View are dependencies because ControlLogic needs them to perform its tasks.
+
+Traditional Approach (Without DI):
+In a traditional approach, an object creates its own dependencies. This can be done using constructors, factory methods, or directly within methods. For example:
+
+java
+Copy code
+public class ControlLogic {
+    private IStorage storage = new FileStorage();
+    private IUserInterfaceContract.View view = new GameView();
+}
+This approach can make the code tightly coupled, harder to test, and less flexible. Why? Because our ControlLogic is now directly tied to FileStorage and GameView, making it difficult to switch to other implementations or mock them for testing.
+
+Dependency Injection Approach:
+With DI, instead of a class creating its own dependencies, the dependencies are "injected" into the class, typically via a constructor, setter, or method. This can be done manually or with the help of DI frameworks like Spring (Java), Guice, etc.
+
+java
+Copy code
+public class ControlLogic {
+    private IStorage storage;
+    private IUserInterfaceContract.View view;
+
+    public ControlLogic(IStorage storage, IUserInterfaceContract.View view) {
+        this.storage = storage;
+        this.view = view;
+    }
+}
+Here, we're injecting the IStorage and IUserInterfaceContract.View dependencies via the constructor.
+
+Benefits of Dependency Injection:
+
+Flexibility and Reusability: Classes become more flexible and reusable because they're not tightly coupled to specific implementations of their dependencies.
+Ease of Testing: It becomes easier to replace real implementations with mocks or stubs for testing.
+Separation of Concerns: Your classes focus on their primary responsibilities, and the responsibility for instantiation and wiring together of objects is moved elsewhere.
+Configurability: With frameworks, you can often externalize configuration details (like which specific dependencies to inject) into configuration files or annotations.
+How DI is Used:
+
+Constructor Injection: Dependencies are provided through the class constructor (as shown in the ControlLogic example).
+Setter Injection: Dependencies are set via setter methods.
+Method Injection: Dependencies are provided through methods.
+DI Containers:
+While manual DI (like our example) is simple and clear, larger applications often use a DI container/framework. These containers can automatically create objects, resolve their dependencies, and inject them as needed.
+
+In summary, Dependency Injection is about providing objects with the things they need to do their job (their dependencies) instead of letting them create their own. This leads to more modular, testable, and maintainable code

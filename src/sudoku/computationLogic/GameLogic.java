@@ -1,3 +1,17 @@
+/**
+ * Program Name: GameLogic.java
+ *
+ * Description:
+ * GameLogic class provides essential logic for managing a Sudoku game. It can generate new games,
+ * check the current state of a Sudoku grid, validate the Sudoku rules, and check if there are unfilled tiles
+ *
+ * @author Ravi Ranjan
+ * @version 1.0.0
+ *
+ * Dependencies:
+ * Java FX
+ */
+
 package sudoku.computationLogic;
 
 import sudoku.constants.GameState;
@@ -41,14 +55,14 @@ public class GameLogic {
                 // Check the row
                 int idx = (r / 3) * 3 + c / 3;
                 if (rows[r].contains(val) || cols[c].contains(val) || boxes[idx].contains(val)) {
-                    return false;
+                    return true;
                 }
                 rows[r].add(val);
                 cols[c].add(val);
                 boxes[idx].add(val);
             }
         }
-        return true;
+        return false;
     }
 
     public static boolean tilesAreNotFilled(int[][] grid) {

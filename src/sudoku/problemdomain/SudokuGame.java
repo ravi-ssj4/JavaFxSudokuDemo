@@ -5,8 +5,11 @@ import sudoku.constants.GameState;
 
 import java.io.Serializable;
 
-// implements Serializable just so that the game data file can
-// be readable and writeable to the operating system files
+/*
+* Implementing Serializable means instances of SudokuGame can be serialized (converted to a byte stream)
+*  and deserialized (reconstructed from a byte stream). This is useful for saving game states to
+* files and reading them back
+* */
 public class SudokuGame implements Serializable {
     private final GameState gameState;
     private final int[][] gridState;
@@ -22,7 +25,10 @@ public class SudokuGame implements Serializable {
     /* we actually want to make the grid state immutable
      * ie. we are not going to give back gridState directly
      * we are going to give back a copy of grid state so that
-     * our sudoku game object is not vulnerable to be messed with */
+     * our SudokuGame object is not vulnerable to be messed with
+     * other parts of the code knowingly or unknowingly. It is also
+     * thread-safe and ensures data integrity
+    */
     public int[][] getCopyOfGridState() {
         return SudokuUtilities.copyToNewArray(gridState);
     }
