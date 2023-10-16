@@ -17,9 +17,7 @@ package sudoku.computationLogic;
 import sudoku.constants.GameState;
 import sudoku.problemdomain.SudokuGame;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 import static sudoku.problemdomain.SudokuGame.GRID_BOUNDARY;
 
@@ -27,7 +25,7 @@ public class GameLogic {
     public static SudokuGame getNewGame(){
         return new SudokuGame(
                 GameState.NEW,
-                GameGenerator.getNewGameGrid()
+                GameGeneratorSimple.getNewGameGrid()
         );
     }
     public static GameState checkForCompletion(int[][] grid){
