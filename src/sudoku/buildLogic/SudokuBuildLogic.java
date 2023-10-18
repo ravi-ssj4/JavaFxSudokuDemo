@@ -19,9 +19,13 @@ public class SudokuBuildLogic {
         IStorage storage = new LocalStorageImpl();
 
         try{
+            System.out.println("DEBUG: before asking for game data from storage");
             initialState = storage.getGameData();
+            System.out.println("DEBUG: after asking for game data from storage");
         } catch(IOException e){
+            System.out.println("DEBUG: before asking for game data from GameLogic");
             initialState = GameLogic.getNewGame();
+            System.out.println("DEBUG: after asking for game data from GameLogic");
             storage.updateGameData(initialState);
         }
 

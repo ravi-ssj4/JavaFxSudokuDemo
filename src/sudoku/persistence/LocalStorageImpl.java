@@ -22,6 +22,12 @@ public class LocalStorageImpl implements IStorage {
 
     @Override
     public SudokuGame getGameData() throws IOException {
+        if (!GAME_DATA.exists()) {
+            // Handle the situation when the file doesn't exist.
+            // You can either return a default game state or throw an exception.
+            System.out.println("DEBUG: before throwing IOException from getGameData");
+            throw new IOException("Game Data file does not exist");
+        }
         FileInputStream fileInputStream = new FileInputStream(GAME_DATA);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         try {

@@ -25,17 +25,18 @@ public class GameLogic {
     public static SudokuGame getNewGame(){
         return new SudokuGame(
                 GameState.NEW,
-                GameGeneratorSimple.getNewGameGrid()
+                GameGeneratorOptimized.getNewGameGrid()
         );
     }
     public static GameState checkForCompletion(int[][] grid){
-        if (sudokuIsInvalid(grid))
-            return GameState.ACTIVE;
-        if (tilesAreNotFilled(grid))
+        if (sudokuIsInvalid(grid) || tilesAreNotFilled(grid))
             return GameState.ACTIVE;
         return GameState.COMPLETE;
     }
 
+    /*
+    * Validates the entire Sudoku grid
+    * */
     public static boolean sudokuIsInvalid(int[][] grid) {
         HashSet<Integer>[] rows = new HashSet[GRID_BOUNDARY];
         HashSet<Integer>[] cols = new HashSet[GRID_BOUNDARY];
@@ -49,7 +50,9 @@ public class GameLogic {
         for (int r = 0; r < GRID_BOUNDARY; r++) {
             for (int c = 0; c < GRID_BOUNDARY; c++) {
                 int val = grid[r][c];
-
+                if (val == 0) {
+                    continue;  // Skip checking empty cells (with value 0)
+                }
                 // Check the row
                 int idx = (r / 3) * 3 + c / 3;
                 if (rows[r].contains(val) || cols[c].contains(val) || boxes[idx].contains(val)) {

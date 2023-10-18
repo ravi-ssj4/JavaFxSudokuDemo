@@ -63,7 +63,7 @@ public class GameGeneratorSimple {
             SudokuUtilities.copySudokuArrayValues(solvableArray, toBeSolved);
 
 //            solvable = SudokuSolverSimple.puzzleIsSolvable(toBeSolved);
-            solvable = SudokuSolverOptimized.puzzleIsSolvable(toBeSolved);
+            solvable = SudokuSolverSimple.puzzleIsSolvable(toBeSolved);
         }
         // at this point we are sure that our solvableArray is having configuration that can be solved!
         return solvableArray;
