@@ -38,6 +38,7 @@ public class GameLogic {
     * Validates the entire Sudoku grid
     * */
     public static boolean sudokuIsInvalid(int[][] grid) {
+        System.out.println("DEBUG: sudokuIsInvalid starts");
         HashSet<Integer>[] rows = new HashSet[GRID_BOUNDARY];
         HashSet<Integer>[] cols = new HashSet[GRID_BOUNDARY];
         HashSet<Integer>[] boxes = new HashSet[GRID_BOUNDARY];

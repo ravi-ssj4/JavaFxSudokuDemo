@@ -28,6 +28,8 @@
 
 package sudoku.computationLogic;
 
+import sudoku.problemdomain.Coordinates;
+
 import static sudoku.problemdomain.SudokuGame.GRID_BOUNDARY;
 
 public class SudokuSolverOptimized {
@@ -60,43 +62,62 @@ public class SudokuSolverOptimized {
         return true;
     }
 
-    public static boolean hasMultipleSolutions(int[][] grid) {
-        return solve(grid, true);
+    public static boolean solveOptimized(int[][] grid) {
+        System.out.println("DEBUG: solveOptimized starts");
+        int[] nextCell = findMostConstrainedCell(grid);
+
+        // If no cell is found, then the puzzle is solved.
+        if (nextCell == null) {
+            return true;
+        }
+
+        int i = nextCell[0];
+        int j = nextCell[1];
+
+        for (int num = 1; num <= GRID_BOUNDARY; num++) {
+            if (isValid(grid, i, j, num)) {
+                grid[i][j] = num;
+
+                if (solveOptimized(grid)) {
+                    return true;
+                }
+
+                // Backtrack if no solution is found
+                grid[i][j] = 0;
+            }
+        }
+
+        return false;
     }
 
-    /*
-    * Purpose:
-    * This method is designed to check if a given Sudoku puzzle
-    * (with some cells already filled) is solvable.
-    * It can also be used to determine if there are multiple solutions to the puzzle.
-    * Context:
-    * It's used in the SudokuSolver class to determine whether a
-    * puzzle can be solved and to find valid solutions
-    * */
-    private static boolean solve(int[][] grid, boolean findMultiple) {
-//        System.out.println("DEBUG: solve starts");
+    private static int[] findMostConstrainedCell(int[][] grid) {
+        int[] cell = null;
+        int minOptions = GRID_BOUNDARY + 1;  // Initialize with a value greater than max possible options
+
         for (int i = 0; i < GRID_BOUNDARY; i++) {
             for (int j = 0; j < GRID_BOUNDARY; j++) {
                 if (grid[i][j] == 0) {
-                    for (int num = 1; num <= GRID_BOUNDARY; num++) {
-                        if (isValid(grid, i, j, num)) {
-                            grid[i][j] = num;
-                            if (solve(grid, findMultiple)) {
-                                if (findMultiple && solve(grid, false)) {
-                                    return true; // Found a second solution -> the moment we find a second sol, we return true
-                                }
-                                return !findMultiple;
-                            }
-                            grid[i][j] = 0; // Backtrack (since current placement at i,j didn't lead to solution)
-                        }
+                    int options = countPossibleValues(grid, i, j);
+
+                    if (options < minOptions) {
+                        minOptions = options;
+                        cell = new int[] {i, j};
                     }
-                    return false; // No valid number can be placed in this cell -> puzzle unsolvable
                 }
             }
         }
-        // If the method completes without finding any empty cells,
-        // it means the Sudoku puzzle is solved, and we return true
-        return true; // Puzzle solved
+        return cell;
+    }
+
+    private static int countPossibleValues(int[][] grid, int row, int col) {
+        int count = 0;
+
+        for (int num = 1; num <= GRID_BOUNDARY; num++) {
+            if (isValid(grid, row, col, num)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /*
@@ -108,6 +129,7 @@ public class SudokuSolverOptimized {
     * It's used in the GameGenerator class to produce a completely solved Sudoku puzzle
     * */
     public static void fillGrid(int[][] grid) {
+        System.out.println("DEBUG: fillGrid starts");
         for (int i = 0; i < GRID_BOUNDARY; i++) {
             for (int j = 0; j < GRID_BOUNDARY; j++) {
                 if (grid[i][j] == 0) {
